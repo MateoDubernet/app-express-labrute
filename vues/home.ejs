@@ -1,0 +1,14 @@
+<%- include('header') %>
+<h1>Bienvenue <%= connectedUser.pseudo %></h1>
+<div id="home">
+
+    <%- include('user-robot', { 
+        connectedUserRobot: connectedUserRobot,
+        armes: armes,
+        boucliers: boucliers,
+        tenues: tenues
+    }) %>
+
+</div>
+<%- include('footer') %>
+

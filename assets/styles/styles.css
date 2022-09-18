@@ -1,0 +1,160 @@
+html, body{
+    margin: 0;
+    padding: 0;
+}
+
+/* Login et Register */
+#loginForm, #registerForm{
+    display: flex;
+    flex-direction: column;
+}
+
+#loginForm > label, #registerForm > label{
+    margin-top: 15px;
+}
+
+#loginForm > input, #registerForm > input{
+    margin-bottom: 10px;
+}
+
+.form{
+    margin: 10px;
+}
+
+.loginExistError{
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.passwordMatchError{
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Header */
+#header{
+    background-color: #7ec9f8;
+    margin-bottom: 20px;
+    padding-top: 15px;
+}
+
+#app-title{
+    text-align: center;
+    margin: 0;
+}
+
+#navbar{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ecf3a3;
+}
+
+/* Home */
+#home{
+    display: flex;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    
+}
+
+#userRobotData, #items{
+    border: 1px solid black;
+    margin: 5px;
+    width: 50%;
+}
+
+.home-title-container{
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.home-title-container > h1{
+    margin: 10px;
+}
+
+.home-robot-container{
+    margin: 10px;
+}
+
+.home-objet-container{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+/* Robot Data*/
+#equip-objet{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 15px;
+    border: 1px solid black;
+}
+
+#armes, #tenues, #boucliers, .robot-items{
+    border: 1px solid black;
+    margin: 5px;
+}
+
+.robot-items{
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 250px;
+}
+
+.robot-items > h5{
+    margin: 0;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.robot-items-img{
+    width: 100%;
+    height: 100%;
+}
+
+/* Liste des Objets*/
+.item{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    text-align: center;
+    margin: 5px;
+    width: 25%;
+}
+
+.item-title{
+    margin-left: 5px;
+}
+
+.item-grid{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*Robot Liste*/
+#robotList{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+#robots{
+    border: 1px solid black;
+}
+
+#robotList > li{
+    list-style: none;
+}
+
+/* items-list */
+#items-list{
+    border: 1px solid black;
+    margin: 5px;
+    width: 100%;
+}

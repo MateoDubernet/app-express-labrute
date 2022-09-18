@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "es2017",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "node_modules/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "files": [
+        "src/models/user.ts",
+        "src/models/arme.ts",
+        "src/models/bouclier.ts",
+        "src/models/tenue.ts",
+        "src/models/robot.ts",
+
+        "src/database/access-bdd.ts",
+        "src/database/user-bdd.ts",
+        "src/database/robot-bdd.ts",
+        "src/database/arme-bdd.ts",
+        "src/database/bouclier-bdd.ts",
+        "src/database/tenue-bdd.ts",
+
+        "src/server.ts",
+        "src/login.ts",
+        "src/register.ts"
+    ]
+}
