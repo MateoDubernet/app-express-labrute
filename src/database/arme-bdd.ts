@@ -10,12 +10,24 @@ export class ArmeBdd {
             connection.query("SELECT * FROM arme ", (error: Error, respons: Arme[]) => {
                 if (error){
                     reject(error)
-                    console.log("arme error!!!!!!!!!!");
                 } 
                 else{
                     result(respons)
-                    console.log("arme succes!!!!!!!!!!");
                 } 
+            })
+        })
+    }
+
+    updateArme(arme: Arme) {
+        return new Promise<Arme[]>((result, reject) => {
+            connection.query("UPDATE arme SET robot_id=? WHERE id=?", 
+            [arme.robot_id, arme.id], (error: Error, respons: any) => {
+                if (error){
+                    reject(error)
+                } 
+                else{
+                    result(respons)
+                }
             })
         })
     }

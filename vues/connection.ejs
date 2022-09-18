@@ -23,10 +23,10 @@
             <input type="submit" value="Valider">
         </form>
         <% if(loginNotExistError === true) { %>
-        <p class="loginExistError">Le login n'existe pas !</p>
+        <p class="loginExistError">Le login introuvable !</p>
         <% } %>
 
-        <% if(wrongPassword === true) { %>
+        <% if(wrongPassword === true && loginNotExistError === false) { %>
         <p class="passwordMatchError">Mauvais Mot de passe !</p>
         <% } %>
         <a href="/register">Register</a>
@@ -38,8 +38,11 @@
             <label>Login</label>
             <input type="text" name="login" id="login" required>
 
-            <label>Pseudo</label>
+            <label>User Pseudo</label>
             <input type="text" name="pseudo" id="pseudo" required>
+
+            <label>Robot Pseudo</label>
+            <input type="text" name="robotPseudo" id="robot-pseudo" required>
 
             <label>Password</label>
             <input type="password" name="password" id="password" required>

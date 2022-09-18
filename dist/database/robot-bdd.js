@@ -60,6 +60,18 @@ class RobotBdd {
             });
         });
     }
+    addRobots(robot) {
+        return new Promise((result, reject) => {
+            access_bdd_1.connection.query("INSERT INTO robot (pseudo) VALUES (?)", [robot.pseudo], (error, respons) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    result(respons);
+                }
+            });
+        });
+    }
 }
 exports.RobotBdd = RobotBdd;
 //# sourceMappingURL=robot-bdd.js.map

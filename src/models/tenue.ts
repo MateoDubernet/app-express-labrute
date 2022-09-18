@@ -1,6 +1,5 @@
-// import { TenueBdd } from "../database/tenue-bdd";
-
-export class Tenue{
+import { TenueBdd } from "../database/tenue-bdd";
+export class Tenue extends TenueBdd{
     
     public id: number;
     public nom: string;
@@ -10,14 +9,20 @@ export class Tenue{
     public defense: number;
     public robot_id: number;
     
-    // public tenues: Tenue[];
-    // private tenueBdd = new TenueBdd();
+    public tenues: Tenue[];
 
-    constructor(){}
+    constructor(){
+        super();
+        this.getTenues();
+    }
 
-    // getTenues(){
-    //     this.tenueBdd.getAllTenues().then((data: Tenue[]) => {
-    //         this.tenues = [...data]
-    //     });
-    // }
+    getTenues(){
+        this.getAllTenues().then((data: Tenue[]) => {
+            this.tenues = [...data]
+        });
+    }
+
+    updateTenueById(tenue: Tenue){
+        this.updateTenue(tenue)
+    }
 }

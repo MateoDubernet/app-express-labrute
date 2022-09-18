@@ -19,4 +19,18 @@ export class TenueBdd {
             })
         })
     }
+
+    updateTenue(tenue: Tenue) {
+        return new Promise<Tenue[]>((result, reject) => {
+            connection.query("UPDATE tenue SET robot_id=? WHERE id=?", 
+            [tenue.robot_id, tenue.id], (error: Error, respons: any) => {
+                if (error){
+                    reject(error)
+                } 
+                else{
+                    result(respons)
+                }
+            })
+        })
+    }
 }

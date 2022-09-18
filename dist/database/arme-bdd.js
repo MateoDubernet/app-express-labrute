@@ -9,11 +9,21 @@ class ArmeBdd {
             access_bdd_1.connection.query("SELECT * FROM arme ", (error, respons) => {
                 if (error) {
                     reject(error);
-                    console.log("arme error!!!!!!!!!!");
                 }
                 else {
                     result(respons);
-                    console.log("arme succes!!!!!!!!!!");
+                }
+            });
+        });
+    }
+    updateArme(arme) {
+        return new Promise((result, reject) => {
+            access_bdd_1.connection.query("UPDATE arme SET robot_id=? WHERE id=?", [arme.robot_id, arme.id], (error, respons) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    result(respons);
                 }
             });
         });

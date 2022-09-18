@@ -18,6 +18,18 @@ class BouclierBdd {
             });
         });
     }
+    updateBouclier(bouclier) {
+        return new Promise((result, reject) => {
+            access_bdd_1.connection.query("UPDATE bouclier SET robot_id=? WHERE id=?", [bouclier.robot_id, bouclier.id], (error, respons) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    result(respons);
+                }
+            });
+        });
+    }
 }
 exports.BouclierBdd = BouclierBdd;
 //# sourceMappingURL=bouclier-bdd.js.map

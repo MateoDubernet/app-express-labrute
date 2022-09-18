@@ -1,5 +1,5 @@
 <div id="userRobotData">
-    <div class="home-title-container">
+    <div class="title-container">
         <h1>Robot Datas</h1>
     </div>
     <div class="home-robot-container">
@@ -41,10 +41,10 @@
 </div>
 
 <div id="items">
-    <div class="home-title-container">
+    <div class="title-container">
         <h1>Items</h1>
     </div>
-    <div class="home-item-container">
+    <div class="item-container">
         <div id="armes">
             <h3 class="item-title">Armes</h3>
             <div class="item-grid">
@@ -54,16 +54,16 @@
                             <img src="<%= armes[i].image %>" alt="item-image">
                             <%= armes[i].nom %>
                             <% if(connectedUserRobot.arme_id !== armes[i].id) {%>
-                                <form action="/home?armeId=<%= armes[i].id %>" method="post">
+                                <form action="/equip?armeId=<%= armes[i].id %>" method="post">
                                     <button type="submit" class="add-arme">Utiliser</button>
                                 </form>
                             <% } else { %>
-                                <form action="/home?armeId=<%= armes[i].id %>" method="post">
-                                    <button type="submit" id="retire-arme">Retirer</button>
+                                <form action="/equip?armeId=<%= armes[i].id %>" method="post">
+                                    <button type="submit" class="retire-arme">Retirer</button>
                                 </form>
                             <% } %>
-                        <% } %>
-                    </div>
+                        </div>
+                    <% } %>   
                 <% }%>
             </div>
         </div>
@@ -76,16 +76,16 @@
                             <img src="<%= boucliers[i].image %>" alt="item-image">
                             <%= boucliers[i].nom %>
                             <% if(connectedUserRobot.bouclier_id !== boucliers[i].id) {%>
-                                <form action="/home?bouclierId=<%= boucliers[i].id %>" method="post">
+                                <form action="/equip?bouclierId=<%= boucliers[i].id %>" method="post">
                                     <button type="submit" class="add-bouclier">Utiliser</button>
                                 </form>
                             <% } else { %>
-                                <form action="/home?bouclierId=<%= boucliers[i].id %>" method="post">
-                                    <button type="submit" id="retire-bouclier">Retirer</button>
+                                <form action="/equip?bouclierId=<%= boucliers[i].id %>" method="post">
+                                    <button type="submit" class="retire-bouclier">Retirer</button>
                                 </form>
                             <% } %>
-                        <% } %>
-                    </div>
+                        </div>
+                    <% } %>
                 <% }%>
             </div>
         </div>
@@ -98,16 +98,16 @@
                             <img src="<%= tenues[i].image %>" alt="item-image">
                             <%= tenues[i].nom %>
                             <% if(connectedUserRobot.tenue_id !== tenues[i].id) {%>
-                                <form action="/home?tenueId=<%= tenues[i].id %>" method="post">
+                                <form action="/equip?tenueId=<%= tenues[i].id %>" method="post">
                                     <button type="submit" class="add-tenue">Utiliser</button>
                                 </form>
                             <% } else { %>
-                                <form action="/home?tenueId=<%= tenues[i].id %>" method="post">
-                                    <button type="submit" id="retire-tenue">Retirer</button>
+                                <form action="/equip?tenueId=<%= tenues[i].id %>" method="post">
+                                    <button type="submit" class="retire-tenue">Retirer</button>
                                 </form>
                             <% } %>
-                        <% } %>
-                    </div>
+                        </div>
+                    <% } %>
                 <% }%>
             </div>
         </div>

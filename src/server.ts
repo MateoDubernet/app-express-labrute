@@ -1,17 +1,15 @@
 import express, { Request, Response } from "express";
 import session from "express-session";
 
-import { UserBdd }  from './database/user-bdd'
 import { RobotBdd }  from './database/robot-bdd'
-import { ArmeBdd } from './database/arme-bdd';
-import { BouclierBdd } from './database/bouclier-bdd';
-import { TenueBdd } from './database/tenue-bdd';
 
 import { Users } from './models/user'
 import { Robots } from './models/robot'
 import { Arme } from './models/arme';
 import { Bouclier } from "./models/bouclier";
 import { Tenue } from "./models/tenue";
+import { Register } from "./register";
+import { Login } from "./login";
 
 const app = express();
 const sess = {
@@ -25,28 +23,18 @@ const sess = {
   }
   app.use(session(sess))
 
-let userBdd = new UserBdd();
+let user = new Users();
+
 let robotBdd = new RobotBdd();
+let register = new Register();
+let login = new Login();
 
-let armeBdd = new ArmeBdd();
-let bouclierBdd = new BouclierBdd();
-let tenueBdd = new TenueBdd();
-
-let users: Users[] = [];
+let arme = new Arme();
+let bouclier = new Bouclier();
+let tenue = new Tenue();
 let robots: Robots[] = [];
 
-let armes: Arme[] = [];
-let boucliers: Bouclier[] = [];
-let tenues: Tenue[] = [];
-
-let connectedUser: Users;
 let connectedUserRobot: Robots
-
-let loginAlreadyExist: boolean
-let passwordMatchError: boolean;
-
-let loginNotExistError: boolean
-let wrongLoginPassword: boolean;
 
 //  Moteur de template
 app.set('views', './vues');
@@ -57,76 +45,88 @@ app.use(express.static("./assets"))
 app.use(express.static("./dist"))
 app.use(express.urlencoded({extended: false}))
 
-//  Routes
+/* Routes */
 
 /* METHODE GET */
 app.get('/login', (request: Request, response: Response) =>{
-    getUsers()
-    loginAlreadyExist = false
-    passwordMatchError = false
-    response.render('connection', { account: true, loginNotExistError: loginNotExistError, wrongPassword: wrongLoginPassword})
+    register.loginAlreadyExist = false
+    register.passwordMatchError = false
+    response.render('connection', { account: true, loginNotExistError: login.loginNotExistError, wrongPassword: login.wrongLoginPassword})
 })
 
 app.get('/register', (request: Request, response: Response) =>{
-    getUsers()
-    loginNotExistError = false
-    wrongLoginPassword = false
-    response.render('connection', { account: false, loginAlreadyExist, passwordMatchError})
+    login.loginNotExistError = false
+    login.wrongLoginPassword = false
+    response.render('connection', { 
+        account: false, 
+        loginAlreadyExist: register.loginAlreadyExist, 
+        passwordMatchError: register.passwordMatchError})
 })
 
 app.get('/home', (request: Request, response: Response) =>{
+
     response.render('home', {
-        connectedUser: connectedUser, 
+        connectedUser: login.currentUser, 
         connectedUserRobot: connectedUserRobot,
-        armes: armes,
-        boucliers: boucliers,
-        tenues: tenues
+        armes: arme.armes,
+        boucliers: bouclier.boucliers,
+        tenues: tenue.tenues
     })
 })
 
 app.get('/robot-list', (request: Request, response: Response) =>{
     getRobots()
-    response.render('robot-list', {connectedUser: connectedUser, robots: robots, users: users})
+    response.render('robot-list', {connectedUser: login.currentUser, robots: robots, users: user.users})
 })
 
 app.get('/object-list', (request: Request, response: Response) =>{
-    response.render('object-list', {armes, boucliers, tenues})
+    response.render('object-list', {connectedUserRobot: connectedUserRobot, armes: arme.armes, boucliers: bouclier.boucliers, tenues: tenue.tenues})
 })
 
 /* METHODE POST */
 app.post('/login', (request: Request, response: Response) =>{
-    login(request.body, response)
+    login.login(request.body, user)
+    if (!login.loginNotExistError && !login.wrongLoginPassword) {
+        getRobots()
+        response.redirect('/home')
+    }else{
+        response.redirect('/login')
+    }
 })
 
 app.post('/register', (request: Request, response: Response) =>{
-    register(request.body, response)
+    register.register(request, response, user)
 })
 
-app.post('/home', (request: Request, response: Response) =>{    
+app.post('/equip', (request: Request, response: Response) =>{    
     equipItems(request, response)
 })
-/*REGARDER CE QUE C'EST QUE EXPRESS SESSION ET COOKIE SESSION POUR GESTION DE SESSION*/
+
 app.listen(4200)
 
-// Fonctions
-function getUsers(){
-    userBdd.getAllUsers().then((data: Users[]) => {
-        users = [...data]
-    }).catch(err => {
-        throw new Error(err.message)
-    })
-}
-
+/* FONCTIONS */
 function getRobots(){
     robotBdd.getAllRobots().then((data: Robots[]) => {
         robots = [...data]
+
+        arme.armes.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
+
+        bouclier.boucliers.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
+
+        tenue.tenues.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
         
         for (let i = 0; i < robots.length; i++) {
-            if (robots[i].user_id === connectedUser.id) {
+            if (robots[i].user_id === login.currentUser.id) {
                 connectedUserRobot = robots[i]
             }
 
-            users.forEach((user) => {
+            user.users.forEach((user) => {
                 if (user.id === robots[i].user_id) {
                     robots[i].user_name = user.pseudo
                 }
@@ -135,86 +135,9 @@ function getRobots(){
     })
 }
 
-function getObjets(){
-    armeBdd.getAllArmes().then((data: Arme[]) => {
-        armes = [...data]
-    });
-
-    bouclierBdd.getAllBoucliers().then((data: Bouclier[]) => {
-        boucliers = [...data]
-    });
-
-    tenueBdd.getAllTenues().then((data: Tenue[]) => {
-        tenues = [...data]
-    });
-}
-
-function register(userData: Users, response: Response) {
-
-    const foundLogin = users.find(user => user.login === userData.login)
-
-    if (foundLogin) {
-        loginAlreadyExist = true
-    }else{
-        loginAlreadyExist = false
-    }
-
-    if (userData.password === userData.verifyPassword) {
-        passwordMatchError = false;
-    }else{
-        passwordMatchError = true;
-    }
-
-    if (users.length === 0) {
-        userData.id = 0;
-    }
-    else {
-        users.forEach((user) => {
-            userData.id = user.id + 1;
-        });
-    }
-    
-    if(!loginAlreadyExist && !passwordMatchError){
-        userBdd.addUsers(userData).then((data: Users[]) => { 
-            response.redirect('/login')
-        }).catch(err => {
-            throw new Error(err.message)
-        })
-    }else{
-        response.redirect('/register')
-    }
-}
-
-function login(userData: Users, response: Response){
-    
-    const foundLogin = users.find(user => user.login === userData.login)
-    wrongLoginPassword = false
-    connectedUser = foundLogin
-
-    if (foundLogin) {
-        loginNotExistError = false
-
-        if (foundLogin.password === userData.password) {
-            wrongLoginPassword = false
-        }else{
-            wrongLoginPassword = true
-        }
-    }else{
-        loginNotExistError = true
-    }
-
-    if (!loginNotExistError && !wrongLoginPassword) {
-        getRobots()
-        getObjets()
-        response.redirect('/home')
-    }else{
-        response.redirect('/login')
-    }
-}
-
 /* Armes */
 function addStatByArme(armeId: number){
-    armes.forEach((arme) => {
+    arme.armes.forEach((arme) => {
         if (arme.id === armeId) {
                 connectedUserRobot.puissance = connectedUserRobot.puissance + arme.puissance
                 connectedUserRobot.esquive = connectedUserRobot.esquive + arme.esquive
@@ -223,7 +146,7 @@ function addStatByArme(armeId: number){
 }
 
 function removeStatByArme(armeId: number){
-    armes.forEach((arme) => {
+    arme.armes.forEach((arme) => {
         if (arme.id === armeId) {
                 connectedUserRobot.puissance = connectedUserRobot.puissance - arme.puissance
                 connectedUserRobot.esquive = connectedUserRobot.esquive - arme.esquive
@@ -233,7 +156,7 @@ function removeStatByArme(armeId: number){
 
 /* Boucliers */
 function addStatByBouclier(bouclierId: number){
-    boucliers.forEach((bouclier) => {
+    bouclier.boucliers.forEach((bouclier) => {
         if (bouclier.id === bouclierId) {
                 connectedUserRobot.defense = connectedUserRobot.defense + bouclier.defense
                 connectedUserRobot.esquive = connectedUserRobot.esquive + bouclier.esquive
@@ -242,7 +165,7 @@ function addStatByBouclier(bouclierId: number){
 }
 
 function removeStatByBouclier(bouclierId: number){
-    boucliers.forEach((bouclier) => {
+    bouclier.boucliers.forEach((bouclier) => {
         if (bouclier.id === bouclierId) {
                 connectedUserRobot.defense = connectedUserRobot.defense - bouclier.defense
                 connectedUserRobot.esquive = connectedUserRobot.esquive - bouclier.esquive
@@ -252,7 +175,7 @@ function removeStatByBouclier(bouclierId: number){
 
 /* Tenues */
 function addStatByTenue(tenueId: number){
-    tenues.forEach((tenue) => {
+    tenue.tenues.forEach((tenue) => {
         if (tenue.id === tenueId) {
             connectedUserRobot.pv = connectedUserRobot.pv + tenue.pv
             connectedUserRobot.puissance = connectedUserRobot.puissance + tenue.puissance
@@ -262,7 +185,7 @@ function addStatByTenue(tenueId: number){
 }
 
 function removeStatByTenue(tenueId: number){
-    tenues.forEach((tenue) => {
+    tenue.tenues.forEach((tenue) => {
         if (tenue.id === tenueId) {
                 connectedUserRobot.pv = connectedUserRobot.pv - tenue.pv
                 connectedUserRobot.puissance = connectedUserRobot.puissance - tenue.puissance
@@ -274,12 +197,12 @@ function removeStatByTenue(tenueId: number){
 function equipItems(request: Request, response: Response){
     var urlParams = new URLSearchParams(request.url)
 
-    var isArme = urlParams.has('/home?armeId')
-    var isBouclier = urlParams.has('/home?bouclierId')
-    var isTenue = urlParams.has('/home?tenueId')
+    var isArme = urlParams.has('/equip?armeId')
+    var isBouclier = urlParams.has('/equip?bouclierId')
+    var isTenue = urlParams.has('/equip?tenueId')
 
     if (isArme) {
-        var armeId = urlParams.get('/home?armeId')
+        var armeId = urlParams.get('/equip?armeId')
 
         if (connectedUserRobot.arme_id === null) {
             connectedUserRobot.arme_id = Number(armeId)
@@ -297,7 +220,7 @@ function equipItems(request: Request, response: Response){
         robotBdd.updateArmeRobots(connectedUserRobot).then((data: Robots[]) => {})
 
     }else if (isBouclier) {
-        var bouclierId = urlParams.get('/home?bouclierId')
+        var bouclierId = urlParams.get('/equip?bouclierId')
 
         if (connectedUserRobot.bouclier_id === null) {
             connectedUserRobot.bouclier_id = Number(bouclierId)
@@ -315,7 +238,7 @@ function equipItems(request: Request, response: Response){
         robotBdd.updateBouclierRobots(connectedUserRobot).then((data: Robots[]) => {})
 
     }else if (isTenue) {
-        var tenueId = urlParams.get('/home?tenueId');
+        var tenueId = urlParams.get('/equip?tenueId');
 
         if (connectedUserRobot.tenue_id === null) {
             connectedUserRobot.tenue_id = Number(tenueId)
@@ -334,4 +257,3 @@ function equipItems(request: Request, response: Response){
     }
     response.redirect('/home')
 }
-

@@ -1,6 +1,5 @@
 import { connection } from "./access-bdd";
 import { Users } from '../models/user'
-
 export class UserBdd {
 
     constructor(){}

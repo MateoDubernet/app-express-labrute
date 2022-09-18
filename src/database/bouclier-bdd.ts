@@ -19,4 +19,18 @@ export class BouclierBdd {
             })
         })
     }
+
+    updateBouclier(bouclier: Bouclier) {
+        return new Promise<Bouclier[]>((result, reject) => {
+            connection.query("UPDATE bouclier SET robot_id=? WHERE id=?", 
+            [bouclier.robot_id, bouclier.id], (error: Error, respons: any) => {
+                if (error){
+                    reject(error)
+                } 
+                else{
+                    result(respons)
+                }
+            })
+        })
+    }
 }

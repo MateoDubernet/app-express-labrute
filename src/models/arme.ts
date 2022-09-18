@@ -1,6 +1,5 @@
-// import { ArmeBdd } from '../database/arme-bdd';
-
-export class Arme{
+import { ArmeBdd } from '../database/arme-bdd';
+export class Arme extends ArmeBdd{
     
     public id: number;
     public nom: string;
@@ -9,14 +8,16 @@ export class Arme{
     public esquive: number;
     public robot_id: number;
 
-    // public armes: Arme[];
-    // private armeBdd = new ArmeBdd();
+    public armes: Arme[];
 
-    constructor(){}
+    constructor(){
+        super();
+        this.getArmes();
+    }
 
-    // getArmes(){
-    //     this.armeBdd.getAllArmes().then((data: Arme[]) => {
-    //         this.armes = [...data]
-    //     });
-    // }
+    getArmes(){
+        this.getAllArmes().then((data: Arme[]) => {
+            this.armes = [...data]
+        });
+    }
 }
