@@ -35,17 +35,24 @@ export class Register {
         }
         
         if(!this.loginAlreadyExist && !this.passwordMatchError){
-            let userRobotPseudo = new Robots;
-            userRobotPseudo.pseudo = formData.body.robotPseudo
+            let newUserRobot = new Robots;
+            newUserRobot.pseudo = formData.body.robotPseudo
 
-            userRobotPseudo.addRobots(userRobotPseudo);
             user.addUsers(formData.body).then((data: Users[]) => { 
+                user.getAllUsers().then((data: Users[]) => {
+                    data.forEach((user) =>{
+                        if (user.login === formData.body.login) {
+                            newUserRobot.user_id = user.id;
+                            newUserRobot.addRobots(newUserRobot);
+                        }
+                    })
+                })
                 response.redirect('/login')
             }).catch(err => {
                 throw new Error(err.message)
             })
         }else{
-            response.redirect('/register-user')
+            response.redirect('/register')
         }
     }
 }

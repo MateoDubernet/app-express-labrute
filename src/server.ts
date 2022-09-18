@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import session from "express-session";
 
 import { RobotBdd }  from './database/robot-bdd'
 
@@ -12,16 +11,6 @@ import { Register } from "./register";
 import { Login } from "./login";
 
 const app = express();
-const sess = {
-    secret: 'keyboard cat',
-    cookie: {secure: true}
-  }
-  
-  if (app.get('env') === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
-    sess.cookie.secure = true // serve secure cookies
-  }
-  app.use(session(sess))
 
 let user = new Users();
 
@@ -96,6 +85,7 @@ app.post('/login', (request: Request, response: Response) =>{
 
 app.post('/register', (request: Request, response: Response) =>{
     register.register(request, response, user)
+    user = new Users();
 })
 
 app.post('/equip', (request: Request, response: Response) =>{    
