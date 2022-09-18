@@ -108,18 +108,6 @@ app.listen(4200)
 function getRobots(){
     robotBdd.getAllRobots().then((data: Robots[]) => {
         robots = [...data]
-
-        arme.armes.forEach((item) => {
-            item.robot_id = connectedUserRobot.id;
-        })
-
-        bouclier.boucliers.forEach((item) => {
-            item.robot_id = connectedUserRobot.id;
-        })
-
-        tenue.tenues.forEach((item) => {
-            item.robot_id = connectedUserRobot.id;
-        })
         
         for (let i = 0; i < robots.length; i++) {
             if (robots[i].user_id === login.currentUser.id) {
@@ -132,6 +120,18 @@ function getRobots(){
                 }
             });
         }
+
+        arme.armes.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
+
+        bouclier.boucliers.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
+
+        tenue.tenues.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        })
     })
 }
 
