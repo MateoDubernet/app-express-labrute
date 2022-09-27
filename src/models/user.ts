@@ -1,24 +1,23 @@
-// import { UserBdd } from "../database/user-bdd";
+import { UserBdd } from "../database/user-bdd";
 
-export class Users {
+export class Users extends UserBdd{
     public id: number;
     public pseudo: string;
     public login: string;
     public password: string;
-    public verifyPassword: string;
 
-    // public users: Users[];
-    // public connectedUser: Users;
-    // private userBdd = new UserBdd();
+    public users: Users[];
 
-    constructor(){}
+    constructor(){
+        super();
+        this.getUsers();
+    }
 
-    // getUsers(){
-    //     this.userBdd.getAllUsers().then((data: Users[]) => {
-    //         this.users = [...data]
-            
-    //     }).catch(err => {
-    //         throw new Error(err.message)
-    //     })
-    // }
+    getUsers(){
+        this.getAllUsers().then((data: Users[]) => {
+            this.users = [...data];
+        }).catch(err => {
+            throw new Error(err.message)
+        })
+    }
 }

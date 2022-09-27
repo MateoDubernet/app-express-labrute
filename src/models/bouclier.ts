@@ -1,6 +1,5 @@
-// import { BouclierBdd } from '../database/bouclier-bdd';
-
-export class Bouclier{
+import { BouclierBdd } from '../database/bouclier-bdd';
+export class Bouclier extends BouclierBdd{
     
     public id: number;
     public nom: string;
@@ -9,14 +8,20 @@ export class Bouclier{
     public esquive: number;
     public robot_id: number;
     
-    // public boucliers: Bouclier[];
-    // private bouclierBdd = new BouclierBdd();
+    public boucliers: Bouclier[];
 
-    constructor(){}
+    constructor(){
+        super();
+        this.getBoucliers();
+    }
 
-    // getBoucliers(){
-    //     this.bouclierBdd.getAllBoucliers().then((data: Bouclier[]) => {
-    //         this.boucliers = [...data]
-    //     });
-    // }
+    getBoucliers(){
+        this.getAllBoucliers().then((data: Bouclier[]) => {
+            this.boucliers = [...data]
+        });
+    }
+
+    updateBouclierById(bouclier: Bouclier){
+        this.updateBouclier(bouclier)
+    }
 }

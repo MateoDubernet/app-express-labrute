@@ -1,44 +1,58 @@
-// import { UserBdd } from "./database/user-bdd";
-// import { Users } from "./models/user";
+import { Users } from "./models/user";
+import { Request, Response } from "express";
+import { Robots } from './models/robot';
 
-// export class Register {
+export class Register {
 
-//     public loginAlreadyExist: boolean
-//     public passwordMatchError: boolean;
-//     private user = new Users();
-//     private userBdd = new UserBdd();
+    public loginAlreadyExist: boolean
+    public passwordMatchError: boolean;
 
-//     constructor(){}
+    constructor(){}
 
-//     register(userData: Users) {
+    register(formData: Request, response: Response, user: Users) {
 
-//         if (userData.password === userData.verifyPassword) {
-//             this.passwordMatchError = false;
-//         }else{
-//             this.passwordMatchError = true;
-//         }
+        if (formData.body.password === formData.body.verifyPassword) {
+            this.passwordMatchError = false;
+        }else{
+            this.passwordMatchError = true;
+        }
 
-//         const foundLogin = this.user.users.find(user => user.login === userData.login)
+        const foundLogin = user.users.find(user => user.login === formData.body.login)
     
-//         if (foundLogin) {
-//             this.loginAlreadyExist = true
-//         }else{
-//             this.loginAlreadyExist = false
-//         }
+        if (foundLogin) {
+            this.loginAlreadyExist = true
+        }else{
+            this.loginAlreadyExist = false
+        }
 
-//         if (this.user.users.length === 0) {
-//             userData.id = 0;
-//         }
-//         else {
-//             this.user.users.forEach((user) => {
-//                 userData.id = user.id + 1;
-//             });
-//         }
+        if (user.users.length === 0) {
+            formData.body.id = 0;
+        }
+        else {
+            user.users.forEach((user) => {
+                formData.body.id = user.id + 1;
+            });
+        }
         
-//         if(!this.loginAlreadyExist && !this.passwordMatchError){
-//             this.userBdd.addUsers(userData).then((data: Users[]) => { }).catch(err => {
-//                 throw new Error(err.message)
-//             })
-//         }
-//     }
-// }
+        if(!this.loginAlreadyExist && !this.passwordMatchError){
+            let newUserRobot = new Robots;
+            newUserRobot.pseudo = formData.body.robotPseudo
+
+            user.addUsers(formData.body).then((data: Users[]) => { 
+                user.getAllUsers().then((data: Users[]) => {
+                    data.forEach((user) =>{
+                        if (user.login === formData.body.login) {
+                            newUserRobot.user_id = user.id;
+                            newUserRobot.addRobots(newUserRobot);
+                        }
+                    })
+                })
+                response.redirect('/login')
+            }).catch(err => {
+                throw new Error(err.message)
+            })
+        }else{
+            response.redirect('/register')
+        }
+    }
+}

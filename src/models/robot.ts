@@ -1,8 +1,5 @@
-// import { RobotBdd } from "../database/robot-bdd"
-// import { Users } from './user';
-// import { Login } from '../login';
-
-export class Robots{
+import { RobotBdd } from "../database/robot-bdd"
+export class Robots extends RobotBdd {
 
     public id: number 
     public pseudo: string
@@ -19,30 +16,9 @@ export class Robots{
     public email: string
     public user_id: number
     public user_name: string
-
-    // public robots: Robots[];
-    // public connectedUserRobot: Robots
     
-    constructor() {}
+    constructor() {
+        super()
+    }
 
-    // getRobots(){
-    //     this.robotBdd.getAllRobots().then((data: Robots[]) => {
-    //         this.robots = [...data]
-
-    //         // for (let i = 0; i < this.robots.length; i++) {
-    //         //     if (this.robots[i].user_id === this.user.connectedUser.id) {
-    //         //         this.connectedUserRobot = this.robots[i]
-    //         //     }
-    
-    //         //     this.user.users.forEach((user) => {
-    //         //         if (user.id === this.robots[i].user_id) {
-    //         //             this.robots[i].user_name = user.pseudo
-    //         //         }
-    //         //     });
-    //         // }
-
-    //     }).catch(err => {
-    //         throw new Error(err.message)
-    //     })
-    // }
 }

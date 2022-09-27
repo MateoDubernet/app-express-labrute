@@ -68,12 +68,12 @@ html, body{
     width: 50%;
 }
 
-.home-title-container{
+.title-container{
     border-bottom: 1px solid black;
     text-align: center;
 }
 
-.home-title-container > h1{
+.title-container > h1{
     margin: 10px;
 }
 
@@ -81,7 +81,7 @@ html, body{
     margin: 10px;
 }
 
-.home-objet-container{
+.item-container{
     display: flex;
     flex-direction: column;
     margin: 10px;

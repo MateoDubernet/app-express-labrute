@@ -1,11 +1,20 @@
 "use strict";
-// import { TenueBdd } from "../database/tenue-bdd";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tenue = void 0;
-class Tenue {
-    // public tenues: Tenue[];
-    // private tenueBdd = new TenueBdd();
-    constructor() { }
+const tenue_bdd_1 = require("../database/tenue-bdd");
+class Tenue extends tenue_bdd_1.TenueBdd {
+    constructor() {
+        super();
+        this.getTenues();
+    }
+    getTenues() {
+        this.getAllTenues().then((data) => {
+            this.tenues = [...data];
+        });
+    }
+    updateTenueById(tenue) {
+        this.updateTenue(tenue);
+    }
 }
 exports.Tenue = Tenue;
 //# sourceMappingURL=tenue.js.map

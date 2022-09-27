@@ -1,12 +1,19 @@
 "use strict";
-// import { UserBdd } from "../database/user-bdd";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
-class Users {
-    // public users: Users[];
-    // public connectedUser: Users;
-    // private userBdd = new UserBdd();
-    constructor() { }
+const user_bdd_1 = require("../database/user-bdd");
+class Users extends user_bdd_1.UserBdd {
+    constructor() {
+        super();
+        this.getUsers();
+    }
+    getUsers() {
+        this.getAllUsers().then((data) => {
+            this.users = [...data];
+        }).catch(err => {
+            throw new Error(err.message);
+        });
+    }
 }
 exports.Users = Users;
 //# sourceMappingURL=user.js.map

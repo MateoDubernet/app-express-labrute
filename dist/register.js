@@ -1,36 +1,45 @@
-// import { UserBdd } from "./database/user-bdd";
-// import { Users } from "./models/user";
-// export class Register {
-//     public loginAlreadyExist: boolean
-//     public passwordMatchError: boolean;
-//     private user = new Users();
-//     private userBdd = new UserBdd();
-//     constructor(){}
-//     register(userData: Users) {
-//         if (userData.password === userData.verifyPassword) {
-//             this.passwordMatchError = false;
-//         }else{
-//             this.passwordMatchError = true;
-//         }
-//         const foundLogin = this.user.users.find(user => user.login === userData.login)
-//         if (foundLogin) {
-//             this.loginAlreadyExist = true
-//         }else{
-//             this.loginAlreadyExist = false
-//         }
-//         if (this.user.users.length === 0) {
-//             userData.id = 0;
-//         }
-//         else {
-//             this.user.users.forEach((user) => {
-//                 userData.id = user.id + 1;
-//             });
-//         }
-//         if(!this.loginAlreadyExist && !this.passwordMatchError){
-//             this.userBdd.addUsers(userData).then((data: Users[]) => { }).catch(err => {
-//                 throw new Error(err.message)
-//             })
-//         }
-//     }
-// }
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Register = void 0;
+const robot_1 = require("./models/robot");
+class Register {
+    constructor() { }
+    register(formData, response, user) {
+        if (formData.body.password === formData.body.verifyPassword) {
+            this.passwordMatchError = false;
+        }
+        else {
+            this.passwordMatchError = true;
+        }
+        const foundLogin = user.users.find(user => user.login === formData.body.login);
+        if (foundLogin) {
+            this.loginAlreadyExist = true;
+        }
+        else {
+            this.loginAlreadyExist = false;
+        }
+        if (user.users.length === 0) {
+            formData.body.id = 0;
+        }
+        else {
+            user.users.forEach((user) => {
+                formData.body.id = user.id + 1;
+            });
+        }
+        if (!this.loginAlreadyExist && !this.passwordMatchError) {
+            let userRobotPseudo = new robot_1.Robots;
+            userRobotPseudo.pseudo = formData.body.robotPseudo;
+            userRobotPseudo.addRobots(userRobotPseudo);
+            user.addUsers(formData.body).then((data) => {
+                response.redirect('/login');
+            }).catch(err => {
+                throw new Error(err.message);
+            });
+        }
+        else {
+            response.redirect('/register-user');
+        }
+    }
+}
+exports.Register = Register;
 //# sourceMappingURL=register.js.map

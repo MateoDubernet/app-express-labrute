@@ -67,5 +67,18 @@ export class RobotBdd {
             })
         })
     }
+
+    addRobots(robot: Robots) {
+        return new Promise<Robots[]>((result, reject) => {
+            connection.query("INSERT INTO robot (pseudo, user_id) VALUES (?, ?)", [robot.pseudo, robot.user_id], (error: Error, respons: any) => {
+                if (error){
+                    reject(error)
+                } 
+                else{
+                    result(respons)
+                }
+            })
+        })
+    }
 }
 
