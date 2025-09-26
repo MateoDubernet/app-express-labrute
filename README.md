@@ -1,4 +1,4 @@
-# Robot Fight Simulator (Projet Alternance)
+# App Labrute
 
 ## Contexte
 Ce projet a été réalisé dans le cadre de mon alternance.  
