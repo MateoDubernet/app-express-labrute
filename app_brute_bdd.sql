@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `arme` (
 -- Listage des données de la table la_brute.arme : ~2 rows (environ)
 /*!40000 ALTER TABLE `arme` DISABLE KEYS */;
 INSERT IGNORE INTO `arme` (`id`, `nom`, `image`, `puissance`, `esquive`, `robot_id`) VALUES
-	(6, 'Dark Excalibur', '/images/Blackexcalibur.png', 20, 0, 1),
-	(7, 'Excalibur', '/images/Excalibur.png', 15, 5, 1);
+	(6, 'Dark Excalibur', '/images/dark-excalibur.png', 20, 0, 1),
+	(7, 'Excalibur', '/images/excalibur.png', 15, 5, 1);
 /*!40000 ALTER TABLE `arme` ENABLE KEYS */;
 
 -- Listage de la structure de la table la_brute. bouclier
@@ -106,8 +106,8 @@ CREATE TABLE IF NOT EXISTS `tenue` (
 -- Listage des données de la table la_brute.tenue : ~2 rows (environ)
 /*!40000 ALTER TABLE `tenue` DISABLE KEYS */;
 INSERT IGNORE INTO `tenue` (`id`, `nom`, `image`, `pv`, `puissance`, `defense`, `robot_id`) VALUES
-	(3, 'Arthuria Armor', '/images/arthuria-armor.png', 10, 15, 5, 1),
-	(4, 'Arthuria Alter Armor', '/images/arthuria-dark-armor.png', 5, 20, 5, 1);
+	(3, 'Arthuria Armor', '/images/armor.png', 10, 15, 5, 1),
+	(4, 'Arthuria Alter Armor', '/images/magic-armor.png', 5, 20, 5, 1);
 /*!40000 ALTER TABLE `tenue` ENABLE KEYS */;
 
 -- Listage de la structure de la table la_brute. user

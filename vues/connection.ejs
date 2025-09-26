@@ -1,66 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/styles/styles.css">
+        <title>La brute</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
-    <title>La brute</title>
-</head>
-<body>
+    <body>
+        <div class="form">
+            <!-- Login Form -->
+            <% if(account === true) { %>
+                <form method="post" action="/login" id="loginForm">
+                    <label>Login</label>
+                    <input type="text" name="login" id="login" required>
 
-<div class="form">
-    <!-- Login Form -->
-    <% if(account === true) { %>
-        <form method="post" action="/login" id="loginForm">
-            <label>Login</label>
-            <input type="text" name="login" id="login" required>
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" required>
 
-            <label>Password</label>
-            <input type="password" name="password" id="password" required>
+                    <input type="submit" value="Valider">
+                </form>
+                <% if(loginNotExistError === true) { %>
+                <p class="loginExistError">Le login introuvable !</p>
+                <% } %>
 
-            <input type="submit" value="Valider">
-        </form>
-        <% if(loginNotExistError === true) { %>
-        <p class="loginExistError">Le login introuvable !</p>
-        <% } %>
+                <% if(wrongPassword === true && loginNotExistError === false) { %>
+                <p class="passwordMatchError">Mauvais Mot de passe !</p>
+                <% } %>
+                <a href="/register">Register</a>
+            <% } %>
 
-        <% if(wrongPassword === true && loginNotExistError === false) { %>
-        <p class="passwordMatchError">Mauvais Mot de passe !</p>
-        <% } %>
-        <a href="/register">Register</a>
-    <% } %>
+            <!-- Register Form -->
+            <% if(account === false) { %>
+                <form method="post" action="/register" id="registerForm">
+                    <label>Login</label>
+                    <input type="text" name="login" id="login" required>
 
-    <!-- Register Form -->
-    <% if(account === false) { %>
-        <form method="post" action="/register" id="registerForm">
-            <label>Login</label>
-            <input type="text" name="login" id="login" required>
+                    <label>User Pseudo</label>
+                    <input type="text" name="pseudo" id="pseudo" required>
 
-            <label>User Pseudo</label>
-            <input type="text" name="pseudo" id="pseudo" required>
+                    <label>Robot Pseudo</label>
+                    <input type="text" name="robotPseudo" id="robot-pseudo" required>
 
-            <label>Robot Pseudo</label>
-            <input type="text" name="robotPseudo" id="robot-pseudo" required>
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" required>
 
-            <label>Password</label>
-            <input type="password" name="password" id="password" required>
+                    <label>Verify Password</label>
+                    <input type="password" name="verifyPassword" id="verify-password" required>
 
-            <label>Verify Password</label>
-            <input type="password" name="verifyPassword" id="verify-password" required>
+                    <input type="submit" value="Valider">
+                </form>
+                <% if(loginAlreadyExist === true) { %>
+                <p class="loginExistError">Le login existe dèja, utilisez en un autre !</p>
+                <% } %>
 
-            <input type="submit" value="Valider">
-        </form>
-        <% if(loginAlreadyExist === true) { %>
-        <p class="loginExistError">Le login existe dèja, utilisez en un autre !</p>
-        <% } %>
-
-        <% if(passwordMatchError === true) { %>
-        <p class="passwordMatchError">Les mots de passe ne correspondent pas !</p>
-        <% } %>
-        <a href="/login">Login</a>
-    <% } %>
-</div>
+                <% if(passwordMatchError === true) { %>
+                <p class="passwordMatchError">Les mots de passe ne correspondent pas !</p>
+                <% } %>
+                <a href="/login">Login</a>
+            <% } %>
+        </div>
 
 <%- include('footer') %>

@@ -27,17 +27,24 @@ class Register {
             });
         }
         if (!this.loginAlreadyExist && !this.passwordMatchError) {
-            let userRobotPseudo = new robot_1.Robots;
-            userRobotPseudo.pseudo = formData.body.robotPseudo;
-            userRobotPseudo.addRobots(userRobotPseudo);
+            let newUserRobot = new robot_1.Robots;
+            newUserRobot.pseudo = formData.body.robotPseudo;
             user.addUsers(formData.body).then((data) => {
+                user.getAllUsers().then((data) => {
+                    data.forEach((user) => {
+                        if (user.login === formData.body.login) {
+                            newUserRobot.user_id = user.id;
+                            newUserRobot.addRobots(newUserRobot);
+                        }
+                    });
+                });
                 response.redirect('/login');
             }).catch(err => {
                 throw new Error(err.message);
             });
         }
         else {
-            response.redirect('/register-user');
+            response.redirect('/register');
         }
     }
 }

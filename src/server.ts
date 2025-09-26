@@ -37,13 +37,17 @@ app.use(express.urlencoded({extended: false}))
 /* Routes */
 
 /* METHODE GET */
-app.get('/login', (request: Request, response: Response) =>{
+app.get('/login', (request: Request, response: Response) => {
     register.loginAlreadyExist = false
     register.passwordMatchError = false
     response.render('connection', { account: true, loginNotExistError: login.loginNotExistError, wrongPassword: login.wrongLoginPassword})
 })
 
-app.get('/register', (request: Request, response: Response) =>{
+app.get('/', (request: Request, response: Response) => {
+    response.redirect("/login");
+})
+
+app.get('/register', (request: Request, response: Response) => {
     login.loginNotExistError = false
     login.wrongLoginPassword = false
     response.render('connection', { 
@@ -52,7 +56,7 @@ app.get('/register', (request: Request, response: Response) =>{
         passwordMatchError: register.passwordMatchError})
 })
 
-app.get('/home', (request: Request, response: Response) =>{
+app.get('/home', (request: Request, response: Response) => {
 
     response.render('home', {
         connectedUser: login.currentUser, 
@@ -63,39 +67,39 @@ app.get('/home', (request: Request, response: Response) =>{
     })
 })
 
-app.get('/robot-list', (request: Request, response: Response) =>{
+app.get('/robot-list', (request: Request, response: Response) => {
     getRobots()
     response.render('robot-list', {connectedUser: login.currentUser, robots: robots, users: user.users})
 })
 
-app.get('/object-list', (request: Request, response: Response) =>{
+app.get('/object-list', (request: Request, response: Response) => {
     response.render('object-list', {connectedUserRobot: connectedUserRobot, armes: arme.armes, boucliers: bouclier.boucliers, tenues: tenue.tenues})
 })
 
 /* METHODE POST */
-app.post('/login', (request: Request, response: Response) =>{
+app.post('/login', (request: Request, response: Response) => {
     login.login(request.body, user)
     if (!login.loginNotExistError && !login.wrongLoginPassword) {
         getRobots()
         response.redirect('/home')
-    }else{
+    } else {
         response.redirect('/login')
     }
 })
 
-app.post('/register', (request: Request, response: Response) =>{
+app.post('/register', (request: Request, response: Response) => {
     register.register(request, response, user)
     user = new Users();
 })
 
-app.post('/equip', (request: Request, response: Response) =>{    
+app.post('/equip', (request: Request, response: Response) => {
     equipItems(request, response)
 })
 
 app.listen(4200)
 
 /* FONCTIONS */
-function getRobots(){
+function getRobots() {
     robotBdd.getAllRobots().then((data: Robots[]) => {
         robots = [...data]
         
@@ -126,7 +130,7 @@ function getRobots(){
 }
 
 /* Armes */
-function addStatByArme(armeId: number){
+function addStatByArme(armeId: number) {
     arme.armes.forEach((arme) => {
         if (arme.id === armeId) {
                 connectedUserRobot.puissance = connectedUserRobot.puissance + arme.puissance
@@ -135,7 +139,7 @@ function addStatByArme(armeId: number){
     })
 }
 
-function removeStatByArme(armeId: number){
+function removeStatByArme(armeId: number) {
     arme.armes.forEach((arme) => {
         if (arme.id === armeId) {
                 connectedUserRobot.puissance = connectedUserRobot.puissance - arme.puissance
@@ -145,7 +149,7 @@ function removeStatByArme(armeId: number){
 }
 
 /* Boucliers */
-function addStatByBouclier(bouclierId: number){
+function addStatByBouclier(bouclierId: number) {
     bouclier.boucliers.forEach((bouclier) => {
         if (bouclier.id === bouclierId) {
                 connectedUserRobot.defense = connectedUserRobot.defense + bouclier.defense
@@ -154,7 +158,7 @@ function addStatByBouclier(bouclierId: number){
     })
 }
 
-function removeStatByBouclier(bouclierId: number){
+function removeStatByBouclier(bouclierId: number) {
     bouclier.boucliers.forEach((bouclier) => {
         if (bouclier.id === bouclierId) {
                 connectedUserRobot.defense = connectedUserRobot.defense - bouclier.defense
@@ -164,7 +168,7 @@ function removeStatByBouclier(bouclierId: number){
 }
 
 /* Tenues */
-function addStatByTenue(tenueId: number){
+function addStatByTenue(tenueId: number) {
     tenue.tenues.forEach((tenue) => {
         if (tenue.id === tenueId) {
             connectedUserRobot.pv = connectedUserRobot.pv + tenue.pv
@@ -174,7 +178,7 @@ function addStatByTenue(tenueId: number){
     })
 }
 
-function removeStatByTenue(tenueId: number){
+function removeStatByTenue(tenueId: number) {
     tenue.tenues.forEach((tenue) => {
         if (tenue.id === tenueId) {
                 connectedUserRobot.pv = connectedUserRobot.pv - tenue.pv
@@ -184,7 +188,7 @@ function removeStatByTenue(tenueId: number){
     })
 }
 
-function equipItems(request: Request, response: Response){
+function equipItems(request: Request, response: Response) {
     var urlParams = new URLSearchParams(request.url)
 
     var isArme = urlParams.has('/equip?armeId')
@@ -198,18 +202,18 @@ function equipItems(request: Request, response: Response){
             connectedUserRobot.arme_id = Number(armeId)
             addStatByArme(connectedUserRobot.arme_id)
 
-        }else if (armeId !== connectedUserRobot.arme_id.toString()) {
+        } else if (armeId !== connectedUserRobot.arme_id.toString()) {
             removeStatByArme(connectedUserRobot.arme_id)
             addStatByArme(Number(armeId))
             connectedUserRobot.arme_id = Number(armeId)
-        }else{
+        } else {
             connectedUserRobot.arme_id = null
             removeStatByArme(Number(armeId))
         }
 
         robotBdd.updateArmeRobots(connectedUserRobot).then((data: Robots[]) => {})
 
-    }else if (isBouclier) {
+    } else if (isBouclier) {
         var bouclierId = urlParams.get('/equip?bouclierId')
 
         if (connectedUserRobot.bouclier_id === null) {
@@ -227,18 +231,18 @@ function equipItems(request: Request, response: Response){
 
         robotBdd.updateBouclierRobots(connectedUserRobot).then((data: Robots[]) => {})
 
-    }else if (isTenue) {
+    } else if (isTenue) {
         var tenueId = urlParams.get('/equip?tenueId');
 
         if (connectedUserRobot.tenue_id === null) {
             connectedUserRobot.tenue_id = Number(tenueId)
             addStatByTenue(connectedUserRobot.tenue_id)
 
-        }else if (tenueId !== connectedUserRobot.tenue_id.toString()) {
+        } else if (tenueId !== connectedUserRobot.tenue_id.toString()) {
             removeStatByTenue(connectedUserRobot.tenue_id)
             addStatByTenue(Number(tenueId))
             connectedUserRobot.tenue_id = Number(tenueId)
-        }else{
+        } else {
             connectedUserRobot.tenue_id = null
             removeStatByTenue(Number(tenueId))
         }

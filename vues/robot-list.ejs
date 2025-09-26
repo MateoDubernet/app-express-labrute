@@ -1,22 +1,21 @@
 <%- include('header') %>
 
 <% for(let i=0; i < robots.length; i++ ){%>
-
     <% if(connectedUser.id !== robots[i].user_id) {%>
-    <div id="robots">
-        <h1>Robot: <%= robots[i].pseudo %></h1> 
-        <div id="robotList">
-            <li>Niveau: <%= robots[i].niveau %></li>
-            <li>Experience: <%= robots[i].experience %></li>
-            <li>Argent: <%= robots[i].argent %> $</li>
-            <li>User: <%= robots[i].user_name %></li>
-    
-            <li>Pv: <%= robots[i].pv %></li>
-            <li>Force: <%= robots[i].puissance %></li>
-            <li>Defense: <%= robots[i].defense %></li>
-            <li>Esquive: <%= robots[i].esquive %></li>
+        <div id="robots">
+            <h1>Robot: <%= robots[i].pseudo %></h1> 
+            <div id="robotList">
+                <li>Niveau: <%= robots[i].niveau %></li>
+                <li>Experience: <%= robots[i].experience %></li>
+                <li>Argent: <%= robots[i].argent %> $</li>
+                <li>User: <%= robots[i].user_name %></li>
+        
+                <li>Pv: <%= robots[i].pv %></li>
+                <li>Force: <%= robots[i].puissance %></li>
+                <li>Defense: <%= robots[i].defense %></li>
+                <li>Esquive: <%= robots[i].esquive %></li>
+            </div>
         </div>
-    </div>
     <% }%>
 <% } %>
 

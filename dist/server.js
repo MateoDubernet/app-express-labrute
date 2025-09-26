@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const express_session_1 = __importDefault(require("express-session"));
 const robot_bdd_1 = require("./database/robot-bdd");
 const user_1 = require("./models/user");
 const arme_1 = require("./models/arme");
@@ -12,24 +11,9 @@ const bouclier_1 = require("./models/bouclier");
 const tenue_1 = require("./models/tenue");
 const register_1 = require("./register");
 const login_1 = require("./login");
-const arme_bdd_1 = require("./database/arme-bdd");
-const bouclier_bdd_1 = require("./database/bouclier-bdd");
-const tenue_bdd_1 = require("./database/tenue-bdd");
 const app = (0, express_1.default)();
-const sess = {
-    secret: 'keyboard cat',
-    cookie: { secure: true }
-};
-if (app.get('env') === 'production') {
-    app.set('trust proxy', 1); // trust first proxy
-    sess.cookie.secure = true; // serve secure cookies
-}
-app.use((0, express_session_1.default)(sess));
 let user = new user_1.Users();
 let robotBdd = new robot_bdd_1.RobotBdd();
-let armeBdd = new arme_bdd_1.ArmeBdd();
-let bouclierBdd = new bouclier_bdd_1.BouclierBdd();
-let tenueBdd = new tenue_bdd_1.TenueBdd();
 let register = new register_1.Register();
 let login = new login_1.Login();
 let arme = new arme_1.Arme();
@@ -50,6 +34,9 @@ app.get('/login', (request, response) => {
     register.loginAlreadyExist = false;
     register.passwordMatchError = false;
     response.render('connection', { account: true, loginNotExistError: login.loginNotExistError, wrongPassword: login.wrongLoginPassword });
+});
+app.get('/', (request, response) => {
+    response.redirect("/login");
 });
 app.get('/register', (request, response) => {
     login.loginNotExistError = false;
@@ -89,15 +76,13 @@ app.post('/login', (request, response) => {
 });
 app.post('/register', (request, response) => {
     register.register(request, response, user);
+    user = new user_1.Users();
 });
 app.post('/equip', (request, response) => {
     equipItems(request, response);
 });
-app.post('/add', (request, response) => {
-    addItems(request, response);
-});
 app.listen(4200);
-// Fonctions
+/* FONCTIONS */
 function getRobots() {
     robotBdd.getAllRobots().then((data) => {
         robots = [...data];
@@ -111,6 +96,15 @@ function getRobots() {
                 }
             });
         }
+        arme.armes.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        });
+        bouclier.boucliers.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        });
+        tenue.tenues.forEach((item) => {
+            item.robot_id = connectedUserRobot.id;
+        });
     });
 }
 /* Armes */
@@ -221,40 +215,6 @@ function equipItems(request, response) {
             removeStatByTenue(Number(tenueId));
         }
         robotBdd.updateTenueRobots(connectedUserRobot).then((data) => { });
-    }
-    response.redirect('/home');
-}
-function addItems(request, response) {
-    var urlParams = new URLSearchParams(request.url);
-    var isArme = urlParams.has('/add?armeId');
-    var isBouclier = urlParams.has('/add?bouclierId');
-    var isTenue = urlParams.has('/add?tenueId');
-    if (isArme) {
-        var armeId = urlParams.get('/add?armeId');
-        arme.armes.forEach((listArme) => {
-            if (listArme.id === Number(armeId)) {
-                arme = listArme;
-            }
-        });
-        armeBdd.updateArme(arme);
-    }
-    else if (isBouclier) {
-        var bouclierId = urlParams.get('/add?bouclierId');
-        bouclier.boucliers.forEach((listBouclier) => {
-            if (listBouclier.id === Number(bouclierId)) {
-                bouclier = listBouclier;
-            }
-        });
-        bouclierBdd.updateBouclier(bouclier);
-    }
-    else if (isTenue) {
-        var tenueId = urlParams.get('/add?tenueId');
-        tenue.tenues.forEach((listTenue) => {
-            if (listTenue.id === Number(tenueId)) {
-                tenue = listTenue;
-            }
-        });
-        tenueBdd.updateTenue(tenue);
     }
     response.redirect('/home');
 }

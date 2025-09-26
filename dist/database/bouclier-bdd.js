@@ -9,11 +9,9 @@ class BouclierBdd {
             access_bdd_1.connection.query("SELECT * FROM bouclier ", (error, respons) => {
                 if (error) {
                     reject(error);
-                    console.log("bouclier error!!!!!!!!!!");
                 }
                 else {
                     result(respons);
-                    console.log("bouclier succes!!!!!!!!!!");
                 }
             });
         });

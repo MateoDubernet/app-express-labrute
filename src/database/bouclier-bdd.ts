@@ -10,11 +10,9 @@ export class BouclierBdd {
             connection.query("SELECT * FROM bouclier ", (error: Error, respons: Bouclier[]) => {
                 if (error){
                     reject(error)
-                    console.log("bouclier error!!!!!!!!!!");
                 } 
                 else{
                     result(respons)
-                    console.log("bouclier succes!!!!!!!!!!");
                 } 
             })
         })

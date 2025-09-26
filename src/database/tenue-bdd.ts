@@ -10,11 +10,9 @@ export class TenueBdd {
             connection.query("SELECT * FROM tenue ", (error: Error, respons: Tenue[]) => {
                 if (error){
                     reject(error)
-                    console.log("tenue error!!!!!!!!!!");
                 } 
                 else{
                     result(respons)
-                    console.log("tenue succes!!!!!!!!!!");
                 } 
             })
         })
