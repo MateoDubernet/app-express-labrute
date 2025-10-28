@@ -1,7 +1,9 @@
 # App Labrute
 
 ## Contexte
-Ce projet a été réalisé dans le cadre de mon alternance.  
+
+### Description
+Ce projet a été réaliser durant mon alternance dans le cadre d'un devoir maison.\
 L’objectif initial était de développer une application permettant de **simuler des combats de robots**.  
 Faute de temps, la partie "combat" n’a pas pu être implémentée, mais plusieurs fonctionnalités essentielles sont présentes :  
 
@@ -42,7 +44,7 @@ Exécuter la commande :
 
 ---
 
-## Fonctionnalités réalisées
+## Fonctionnalités
 - Inscription / Connexion\
 Les utilisateurs peuvent créer un compte et se connecter.
 
@@ -54,15 +56,3 @@ Chaque utilisateur peut consulter les robots créés par les autres.
 
 - Liste des équipements\
 Tous les équipements existants sont affichés dans une interface dédiée.
-
----
-
-## Limites actuelles
-- La fonctionnalité principale de simulation de combat de robots n’a pas encore été implémentée.
-- Le projet reste une base solide sur laquelle cette fonctionnalité pourrait être ajoutée par la suite.
-
----
-
-## Auteur
-Projet réalisé dans le cadre de mon alternance.
-Développé avec Node.js, TypeScript et EJS.
