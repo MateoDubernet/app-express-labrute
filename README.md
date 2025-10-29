@@ -15,7 +15,13 @@ Faute de temps, la partie "combat" n’a pas pu être implémentée, mais plusie
 L’application repose sur :  
 - **Node.js / Express.js** pour le serveur  
 - **TypeScript** pour la logique côté serveur  
-- **EJS** comme moteur de templates (interfaces HTML dynamiques)  
+- **EJS** comme moteur de templates (interfaces HTML dynamiques)
+
+---
+
+## Prérequis
+
+- Node.js et npm installés
 
 ---
 
