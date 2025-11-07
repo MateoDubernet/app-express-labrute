@@ -29,20 +29,25 @@ L’application repose sur :
 
 ### 1. Cloner le projet
 ```bash
-    git clone <url-du-repo>
+    git clone https://github.com/MateoDubernet/app-labrute.git
     cd <nom-du-dossier>
 ```
 
-### 2. Installer les dépendances
+### 2. Aller sur le projet
+```bash
+    cd app-labrute
+```
+
+### 3. Installer les dépendances
 ```bash
     npm install
 ```
 
-### 3. Configuration
+### 4. Configuration
 - Configurer le fichier **src\database\access-bdd.ts** avec les informations de la base de données.
 - Exécuter le fichier app_brute_bdd.sql pour créer la base de données, les tables et les données.
 
-### 4. Lancer l’application
+### 5. Lancer l’application
 Exécuter la commande :
 ```bash
     npm start
