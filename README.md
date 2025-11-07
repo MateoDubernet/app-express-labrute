@@ -30,7 +30,6 @@ L’application repose sur :
 ### 1. Cloner le projet
 ```bash
     git clone https://github.com/MateoDubernet/app-labrute.git
-    cd <nom-du-dossier>
 ```
 
 ### 2. Aller sur le projet
