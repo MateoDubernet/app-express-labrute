@@ -22,6 +22,7 @@ L’application repose sur :
 ## Prérequis
 
 - Node.js et npm installés
+- MySQL
 
 ---
 
@@ -44,7 +45,7 @@ L’application repose sur :
 
 ### 4. Configuration
 - Configurer le fichier **src\database\access-bdd.ts** avec les informations de la base de données.
-- Exécuter le fichier app_brute_bdd.sql pour créer la base de données, les tables et les données.
+- Exécuter le fichier app_brute_bdd.sql avec Mysql pour créer la base de données, les tables et les données.
 
 ### 5. Lancer l’application
 Exécuter la commande :
