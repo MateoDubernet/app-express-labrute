@@ -53,6 +53,8 @@ Exécuter la commande :
     npm start
 ```
 
+Aller dans le navigateur à l'adresse localhost:4200
+
 ---
 
 ## Fonctionnalités
