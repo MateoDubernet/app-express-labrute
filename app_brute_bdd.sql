@@ -106,8 +106,8 @@ CREATE TABLE IF NOT EXISTS `tenue` (
 -- Listage des données de la table la_brute.tenue : ~2 rows (environ)
 /*!40000 ALTER TABLE `tenue` DISABLE KEYS */;
 INSERT IGNORE INTO `tenue` (`id`, `nom`, `image`, `pv`, `puissance`, `defense`, `robot_id`) VALUES
-	(3, 'Arthuria Armor', '/images/armor.png', 10, 15, 5, 1),
-	(4, 'Arthuria Alter Armor', '/images/magic-armor.png', 5, 20, 5, 1);
+	(3, 'Armor', '/images/armor.png', 10, 15, 5, 1),
+	(4, 'Magic Armor', '/images/magic-armor.png', 5, 20, 5, 1);
 /*!40000 ALTER TABLE `tenue` ENABLE KEYS */;
 
 -- Listage de la structure de la table la_brute. user
